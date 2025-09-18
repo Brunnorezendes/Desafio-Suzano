@@ -1,4 +1,4 @@
-# PO-207 Project
+# Suzano and Unifesp Challenge Project
 
 This project contains algorithms for solving the Traveling Salesman Problem (TSP) for store routing optimization.
 
@@ -50,4 +50,5 @@ Store data is expected in CSV format with columns:
 - visit_duration_minutes
 - initial_frequency
 - baseline_profitability
+
 - profitability_freq_1 through profitability_freq_6
