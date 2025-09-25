@@ -1,8 +1,8 @@
 import numpy as np
 from pulp import LpProblem, LpMinimize, LpVariable, lpSum, LpBinary, PULP_CBC_CMD, LpStatus
-from main import get_stores_from_csv, one_day_minimum_travel
+from utils import get_stores_from_csv, one_day_minimum_travel
 
-def solve_vrp_multi_promotor(n_promotores):
+def solve_vrp_multi_promotor(n_promotores, n_stores=10, instance=1):
     """
     Solve the Vehicle Routing Problem for multiple promoters.
     
@@ -14,7 +14,7 @@ def solve_vrp_multi_promotor(n_promotores):
     """
     
     # Get store data from CSV
-    stores = get_stores_from_csv(10, 1)
+    stores = get_stores_from_csv(n_stores, instance)
     
     if not stores:
         return {"error": "Could not load store data"}
@@ -121,7 +121,7 @@ def solve_vrp_multi_promotor(n_promotores):
                 model += lpSum(U[i][k][k][z] for k in J) <= 1
 
     # Solve the model
-    solver = PULP_CBC_CMD(msg=False, timeLimit=60)  # 60 seconds limit
+    solver = PULP_CBC_CMD(msg=False, timeLimit=30)  # 60 seconds limit
     model.solve(solver)
 
     # Collect results
@@ -222,8 +222,3 @@ def print_results(results):
                     print(f"    Distância total: {route_info['total_distance']:.2f}")
             else:
                 print(f"  {promoter.replace('_', ' ').title()}: Nenhuma visita")
-
-if __name__ == "__main__":
-    # Example usage with 2 promoters
-    results = solve_vrp_multi_promotor(n_promotores=2)
-    print_results(results)
